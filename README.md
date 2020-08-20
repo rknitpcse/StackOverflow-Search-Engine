@@ -1,11 +1,11 @@
 # StackOverflow-Search-Engine
 => How to download the apache maven java application:-
 *Go to the StackOverflow-Search-Engine Repository 
-*Download or Clone it
+*Download Zip
 
 
 => How to run the java application:-
-1. Import to any IDE of java like Eclipse/Netbeans as a Maven Project
+1. Import to any IDE of java like Eclipse/Netbeans as a Maven Project, Project Name: stackoverflow-search-app (this folder is present inside the StackOverflow-Search-Engine-master extracted folder)
 2. Go to the src/main/java -> com.rakesh.driver
 3. Select MainDriver.java and run as "Java Application" or type Alt+Shift+X,J
 4. On console type the query
