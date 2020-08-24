@@ -13,8 +13,7 @@ public class CommonFunctions {
 	private String textSearch = null;
 	
 	/**
-	 * Returns input String
-	 * @return String
+	 * take user input String
 	 */
 	private void takeInputSearchText() {
 		System.out.print("Please enter your search query: ");
@@ -40,7 +39,7 @@ public class CommonFunctions {
 	{
 		this.takeInputSearchText();
 		String searchText = this.textSearch.trim();
-	    searchText = searchText.replaceAll("\\s", "%20");
+	        searchText = searchText.replaceAll("\\s", "%20");
 		return ("intitle=".concat(searchText));
 	}
 	
