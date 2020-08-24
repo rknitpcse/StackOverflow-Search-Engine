@@ -30,19 +30,18 @@ public class StackOverFlowResult {
 		//parsing the result String into JSONObject
 		JSONObject jsonObj = new JSONObject(result);
 		JSONArray jsonArrayItems = (JSONArray) jsonObj.get("items");
-		
+
 		//lambda function definition
 		JSONInterface jsonInterface = (jsonElement) -> System.out.print("\tTitle: "+ jsonElement.get("title") + ". URL: "+ jsonElement.get("link")+"\n");
-		
-		//for iteration of JSONArray
-		JSONObject jsonItr = null;
+
+		//iteration of JSONArray
 		for(int i = 0; i < Math.min(jsonArrayItems.length(), 5); i++)
 		{
-			jsonItr = (JSONObject) jsonArrayItems.get(i);
+			JSONObject jsonItr = (JSONObject) jsonArrayItems.get(i);
 			jsonInterface.jsonParse(jsonItr);
-			
+
 		}
-		
+
 	}
 
 
