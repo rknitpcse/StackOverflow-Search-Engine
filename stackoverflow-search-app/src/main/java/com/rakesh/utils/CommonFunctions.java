@@ -9,20 +9,18 @@ import java.util.Scanner;
  */
 
 public class CommonFunctions {
-
-	private Scanner scan = null;
+	
 	private String textSearch = null;
 	
 	/**
 	 * Returns input String
 	 * @return String
 	 */
-	public String takeInputSearchText() {
+	private void takeInputSearchText() {
 		System.out.print("Please enter your search query: ");
-		scan = new Scanner(System.in);
-		String searchText = scan.nextLine();
+		Scanner scan = new Scanner(System.in);
+		this.textSearch = scan.nextLine();
 		scan.close();
-		return searchText;
 	}
 	
 	/**
@@ -31,7 +29,7 @@ public class CommonFunctions {
 	 */
 	public String getSearchText()
 	{
-		return textSearch;
+		return this.textSearch;
 	}
 	
 	/**
@@ -40,8 +38,8 @@ public class CommonFunctions {
 	 */
 	public String getUrlIntitle() 
 	{
-		String searchText = takeInputSearchText().trim();
-		textSearch = searchText;
+		this.takeInputSearchText();
+		String searchText = this.textSearch.trim();
 	    searchText = searchText.replaceAll("\\s", "%20");
 		return ("intitle=".concat(searchText));
 	}
