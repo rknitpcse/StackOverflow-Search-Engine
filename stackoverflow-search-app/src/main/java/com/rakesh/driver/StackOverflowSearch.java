@@ -22,34 +22,31 @@ import java.io.IOException;
  *
  */
 public class StackOverflowSearch {
-
-	private CloseableHttpClient httpClient = null;
-	private final String baseStackOverflowApiUrl = "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&site=stackoverflow&";
 	
-	private CommonFunctions commonFunction = new CommonFunctions();
-	private StackOverFlowResult stackOverflowResult = new StackOverFlowResult();
-
-	/**
-	 * The class constructor
-	 */
-	public StackOverflowSearch() {
-		// TODO Auto-generated constructor stub
-		this.httpClient = HttpClients.custom().setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build()).build();
-	}
+	private final String baseStackOverflowApiUrl = "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&site=stackoverflow&";
+	private final CloseableHttpClient httpClient = HttpClients.custom().setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build()).build();
+	
+	private final CommonFunctions commonFunction = new CommonFunctions();
+	private final StackOverFlowResult stackOverflowResult = new StackOverFlowResult();
 
 	/**
 	 * Close the opened HttpClient 
-	 * @throws IOException
 	 */
-	void close() throws IOException {
-		httpClient.close();
+	void close() {
+		
+		try {
+			httpClient.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	/**
 	 * Fire HttpGet request
-	 * @throws Exception
 	 */
-	void sendGet() throws Exception {
+	void sendGet(){
 
 		HttpGet request = new HttpGet(baseStackOverflowApiUrl.concat(commonFunction.getUrlIntitle()));
 
@@ -68,12 +65,19 @@ public class StackOverflowSearch {
 					//System.out.println(result);
 					stackOverflowResult.parseStringAsJSON(result, commonFunction.getSearchText());
 				}
+				else
+					System.out.println("No data revieved");
 			}
 			else
 			{
 				// Get HttpResponse Status
 				System.out.println(response.getStatusLine().toString());
 			}
+			
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 
 	}
