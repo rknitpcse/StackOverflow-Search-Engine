@@ -49,12 +49,15 @@ public class StackOverflowSearch {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					//System.out.println(response.body().string());
+					finally {
+						//closing the HTTP connection
+						response.body().close();
+					}
 
 				}
 			}
 
 		});
-
+		
 	}
 }
