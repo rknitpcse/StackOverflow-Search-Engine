@@ -16,9 +16,14 @@ public class CommonFunctions {
 	 * take user input String
 	 */
 	private void takeInputSearchText() {
-		System.out.print("Please enter your search query: ");
 		Scanner scan = new Scanner(System.in);
-		this.textSearch = scan.nextLine();
+		while(true)
+		{
+			System.out.print("Please enter your search query: ");
+			this.textSearch = scan.nextLine();
+			if(!this.textSearch.isEmpty())
+				break;
+		}
 		scan.close();
 	}
 	
