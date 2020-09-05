@@ -1,18 +1,13 @@
 package com.rakesh.driver;
 
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-
 import com.rakesh.adapter.StackOverFlowResult;
 import com.rakesh.utils.CommonFunctions;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.IOException;
 
@@ -22,64 +17,44 @@ import java.io.IOException;
  *
  */
 public class StackOverflowSearch {
-	
+
 	private final String baseStackOverflowApiUrl = "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&site=stackoverflow&";
-	private final CloseableHttpClient httpClient = HttpClients.custom().setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build()).build();
-	
+	private final OkHttpClient httpClient = new OkHttpClient();
+
 	private final CommonFunctions commonFunction = new CommonFunctions();
 	private final StackOverFlowResult stackOverflowResult = new StackOverFlowResult();
 
 	/**
-	 * Close the opened HttpClient 
-	 */
-	void close() {
-		
-		try {
-			httpClient.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	/**
 	 * Fire HttpGet request
 	 */
-	void sendGet(){
+	void sendGet() throws Exception{
 
-		HttpGet request = new HttpGet(baseStackOverflowApiUrl.concat(commonFunction.getUrlIntitle()));
+		Request request = new Request.Builder().url(baseStackOverflowApiUrl.concat(commonFunction.getUrlIntitle())).build();
 
-		try (CloseableHttpResponse response = httpClient.execute(request)) 
-		{
+		httpClient.newCall(request).enqueue(new Callback() {
+			@Override
+			public void onFailure(Call call, IOException e) {
+				e.printStackTrace();
+			}
 
-			if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
-			{
-				HttpEntity entity = response.getEntity();
-				//Header headers = entity.getContentType();
-				//System.out.println(headers);
+			@Override
+			public void onResponse(Call call, final Response response) throws IOException {
+				if (!response.isSuccessful()) {
+					throw new IOException("Unexpected code " + response.code());
+				} else {
+					// do something with the result
+					try {
+						stackOverflowResult.parseStringAsJSON(response.body().string(), commonFunction.getSearchText());
+					}  catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					//System.out.println(response.body().string());
 
-				if (entity != null) {
-					// return it as a String
-					String result = EntityUtils.toString(entity);
-					//System.out.println(result);
-					stackOverflowResult.parseStringAsJSON(result, commonFunction.getSearchText());
 				}
-				else
-					System.out.println("No data revieved");
 			}
-			else
-			{
-				// Get HttpResponse Status
-				System.out.println(response.getStatusLine().toString());
-			}
-			
-		}
-		catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
+
+		});
 
 	}
-
 }
