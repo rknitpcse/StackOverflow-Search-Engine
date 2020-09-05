@@ -20,14 +20,5 @@ public class MainDriver {
 			// TODO: handle exception
 			e.printStackTrace();
 		} 
-		finally 
-		{	
-			try {
-				stackOverflowSearch.close();
-			} catch (Exception e2) {
-				// TODO: handle exception
-				e2.printStackTrace();
-			}
-		}
 	}
 }
